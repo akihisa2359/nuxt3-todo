@@ -1,18 +1,20 @@
 <template>
   <div>
-    <TheModal v-if="modalShown" @close="modalShown = false">
-      <Form>
-        <!-- <Field name="title" rules="required" />
-        <ErrorMessage name="title" /> -->
-        <TheField label="title" name="name" rules="required" class="mb-m" />
-        <TheTextField
-          label="content"
-          name="content"
-          class="mb-m"
-          :height="200"
-        />
-        <button class="button success">save</button>
-      </Form>
+    <TheModal v-if="isModalVisible" @close="isModalVisible = false">
+      <div style="display: flex; max-width: 600px">
+        <Form>
+          <!-- <Field name="title" rules="required" />
+            <ErrorMessage name="title" /> -->
+          <TheField label="title" name="name" rules="required" class="mb-m" />
+          <TheTextField
+            label="content"
+            name="content"
+            class="mb-m"
+            :height="200"
+          />
+          <button class="button success">save</button>
+        </Form>
+      </div>
     </TheModal>
     <div class="header">
       <h1 class="py-l">todo</h1>
@@ -50,11 +52,11 @@ const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
 // console.log(process.env.TEST_VALUE);
 const items = ref([]);
-const modalShown = ref(false);
+const isModalVisible = ref(false);
 
 const addTodo = () => {
   console.log("add todo");
-  modalShown.value = true;
+  isModalVisible.value = true;
 };
 
 items.value = [

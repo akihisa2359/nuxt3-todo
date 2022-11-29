@@ -27,12 +27,10 @@ const close = () => {
 }
 
 .modal {
-  height: 350px;
-  width: 250px;
+  min-height: 350px;
+  min-width: 100px;
   background-color: white;
   margin: auto;
-  margin-top: 100px;
   border-radius: 10px;
-  padding: 60px 40px;
 }
 </style>
