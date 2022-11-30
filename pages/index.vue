@@ -1,8 +1,8 @@
 <template>
   <div>
     <TheModal v-if="isModalVisible" @close="isModalVisible = false">
-      <div style="display: flex; max-width: 600px">
-        <Form>
+      <div style="width: 250px; padding: 24px">
+        <Form v-slot="{ errors }" :initialValues="item" @submit="onSubmit">
           <!-- <Field name="title" rules="required" />
             <ErrorMessage name="title" /> -->
           <TheField label="title" name="name" rules="required" class="mb-m" />
@@ -12,7 +12,12 @@
             class="mb-m"
             :height="200"
           />
-          <button class="button success">save</button>
+          <button
+            :disabled="Object.keys(errors).length >= 1"
+            class="button success"
+          >
+            save
+          </button>
         </Form>
       </div>
     </TheModal>
@@ -28,6 +33,7 @@
             <th>id</th>
             <th>name</th>
             <th>age</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -35,6 +41,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.age }}</td>
+            <td><button @click="updateTodo(item)">編集</button></td>
           </tr>
         </tbody>
       </table>
@@ -52,11 +59,26 @@ const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
 // console.log(process.env.TEST_VALUE);
 const items = ref([]);
+const item = ref(null);
 const isModalVisible = ref(false);
 
 const addTodo = () => {
   console.log("add todo");
+  item.value = {
+    name: "",
+    age: "",
+  };
   isModalVisible.value = true;
+};
+
+const updateTodo = (values) => {
+  item.value = values;
+  isModalVisible.value = true;
+};
+
+const onSubmit = (values) => {
+  console.log(values);
+  items.value;
 };
 
 items.value = [

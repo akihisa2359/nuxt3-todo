@@ -8,7 +8,7 @@ export default defineNuxtConfig({
       publicTestValue: process.env.TEST_VALUE,
     },
   },
-  css: ["@/assets/main.scss", "@/assets/normalize.css"],
+  css: ["@/assets/main.scss", "@/assets/sanitize.css"],
   vite: {
     css: {
       preprocessorOptions: {

@@ -46,5 +46,8 @@ body {
     &:hover {
       background-color: #2d99ec;
     }
+    &:disabled {
+      background-color: #cccccc;
+    }
   }
 }
