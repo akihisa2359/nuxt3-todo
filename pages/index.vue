@@ -78,7 +78,8 @@ const updateTodo = (values) => {
 
 const onSubmit = (values) => {
   console.log(values);
-  items.value;
+  const item = { id: items.value.length + 1, ...values };
+  items.value.push(item);
 };
 
 items.value = [
