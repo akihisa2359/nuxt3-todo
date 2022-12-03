@@ -31,16 +31,16 @@
         <thead>
           <tr>
             <th>id</th>
-            <th>name</th>
-            <th>age</th>
+            <th>title</th>
+            <th>content</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in items" :key="item.id">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.age }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.content }}</td>
             <td><button @click="updateTodo(item)">編集</button></td>
           </tr>
         </tbody>
@@ -83,8 +83,8 @@ const onSubmit = (values) => {
 };
 
 items.value = [
-  { id: 1, name: "maki", age: 26 },
-  { id: 2, name: "moto", age: 26 },
+  { id: 1, title: "maki", content: "content" },
+  { id: 2, title: "moto", content: "content" },
 ];
 
 defineRule("required", required);
