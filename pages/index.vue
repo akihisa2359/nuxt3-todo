@@ -2,7 +2,13 @@
   <div>
     <TheModal v-if="isModalVisible" @close="isModalVisible = false">
       <div style="width: 250px; padding: 24px">
-        <Form v-slot="{ errors }" :initialValues="item" @submit="onSubmit">
+        <Form
+          v-slot="{ values, errors }"
+          :initialValues="item"
+          @submit="onSubmit"
+        >
+          {{ values }}
+          <br />
           <!-- <Field name="title" rules="required" />
             <ErrorMessage name="title" /> -->
           <TheField label="title" name="name" rules="required" class="mb-m" />
