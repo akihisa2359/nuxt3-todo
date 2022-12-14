@@ -94,6 +94,13 @@ items.value = [
 ];
 
 defineRule("required", required);
+
+const firebase = useFirebase();
+// console.log("firebase");
+// console.log(firebase);
+// const db = getDatabase(firebase);
+// console.log(db);
+// const { $firebaseApp } = useNuxtApp();
 </script>
 
 <style lang="scss">
