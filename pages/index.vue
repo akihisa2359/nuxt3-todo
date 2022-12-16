@@ -60,6 +60,14 @@
 <script setup>
 import { Field, Form, defineRule, ErrorMessage } from "vee-validate";
 import { required } from "@vee-validate/rules";
+import {
+  Database,
+  getDatabase,
+  ref as fbref,
+  set,
+  child,
+  get,
+} from "firebase/database";
 
 const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
@@ -95,12 +103,14 @@ items.value = [
 
 defineRule("required", required);
 
-const firebase = useFirebase();
-// console.log("firebase");
-// console.log(firebase);
-// const db = getDatabase(firebase);
-// console.log(db);
-// const { $firebaseApp } = useNuxtApp();
+const dbRef = fbref(getDatabase());
+get(child(dbRef, "todo"))
+  .then((snapshot) => {
+    console.log(snapshot.val());
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 </script>
 
 <style lang="scss">
