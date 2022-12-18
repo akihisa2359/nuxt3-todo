@@ -111,6 +111,15 @@ get(child(dbRef, "todo"))
   .catch((error) => {
     console.log(error);
   });
+
+const key = push(child(dbRef, "todo")).key;
+const res = update(dbRef, {
+  ["/todo/" + key]: {
+    title: "title",
+    content: "content from app",
+  },
+});
+console.log(res);
 </script>
 
 <style lang="scss">
