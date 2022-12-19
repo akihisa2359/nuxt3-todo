@@ -11,7 +11,7 @@
           <br />
           <!-- <Field name="title" rules="required" />
             <ErrorMessage name="title" /> -->
-          <TheField label="title" name="name" rules="required" class="mb-m" />
+          <TheField label="title" name="title" class="mb-m" />
           <TheTextField
             label="content"
             name="content"
@@ -58,15 +58,18 @@
 </template>
 
 <script setup>
-import { Field, Form, defineRule, ErrorMessage } from "vee-validate";
+// import { Field, Form, defineRule, ErrorMessage } from "vee-validate";
+import { Field, Form, defineRule, ErrorMessage } from "~/libs/vee-validate";
 import { required } from "@vee-validate/rules";
 import {
   Database,
   getDatabase,
-  ref as fbref,
+  ref as dbRef,
   set,
   child,
   get,
+  push,
+  update,
 } from "firebase/database";
 
 const runtimeConfig = useRuntimeConfig();
@@ -75,6 +78,23 @@ console.log(runtimeConfig);
 const items = ref([]);
 const item = ref(null);
 const isModalVisible = ref(false);
+const db = ref(null);
+
+onMounted(async () => {
+  db.value = dbRef(getDatabase());
+  const res = await get(child(db.value, "todo"));
+  items.value = res.val();
+});
+
+const updateTodo = (values) => {
+  const key = push(child(db.value, "todo")).key;
+  const res = update(db.value, {
+    [`/todo/${key}`]: {
+      title: values.title,
+      content: values.content,
+    },
+  });
+};
 
 const addTodo = () => {
   console.log("add todo");
@@ -85,41 +105,13 @@ const addTodo = () => {
   isModalVisible.value = true;
 };
 
-const updateTodo = (values) => {
-  item.value = values;
-  isModalVisible.value = true;
-};
-
 const onSubmit = (values) => {
   console.log(values);
   const item = { id: items.value.length + 1, ...values };
   items.value.push(item);
 };
 
-items.value = [
-  { id: 1, title: "maki", content: "content" },
-  { id: 2, title: "moto", content: "content" },
-];
-
 defineRule("required", required);
-
-const dbRef = fbref(getDatabase());
-get(child(dbRef, "todo"))
-  .then((snapshot) => {
-    console.log(snapshot.val());
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-
-const key = push(child(dbRef, "todo")).key;
-const res = update(dbRef, {
-  ["/todo/" + key]: {
-    title: "title",
-    content: "content from app",
-  },
-});
-console.log(res);
 </script>
 
 <style lang="scss">
