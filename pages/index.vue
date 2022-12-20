@@ -32,7 +32,7 @@
     </div>
     <div class="container">
       <h1 class="hoge">test</h1>
-      <button @click="addTodo">add</button>
+      <button @click="openModal(null)">add</button>
       <table>
         <thead>
           <tr>
@@ -43,11 +43,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in items" :key="item.id">
-            <td>{{ item.id }}</td>
+          <tr v-for="(item, key) in items" :key="item.id">
+            <td>{{ key }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.content }}</td>
-            <td><button @click="updateTodo(item)">編集</button></td>
+            <td>
+              <button @click="openModal({ id: key, ...item })">編集</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -58,8 +60,8 @@
 </template>
 
 <script setup>
-// import { Field, Form, defineRule, ErrorMessage } from "vee-validate";
-import { Field, Form, defineRule, ErrorMessage } from "~/libs/vee-validate";
+import { Field, Form, defineRule, ErrorMessage } from "vee-validate";
+// import { Field, Form, defineRule, ErrorMessage } from "~/libs/vee-validate";
 import { required } from "@vee-validate/rules";
 import {
   Database,
@@ -74,7 +76,6 @@ import {
 
 const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
-// console.log(process.env.TEST_VALUE);
 const items = ref([]);
 const item = ref(null);
 const isModalVisible = ref(false);
@@ -84,6 +85,7 @@ onMounted(async () => {
   db.value = dbRef(getDatabase());
   const res = await get(child(db.value, "todo"));
   items.value = res.val();
+  console.log(res.val());
 });
 
 const updateTodo = (values) => {
@@ -96,19 +98,17 @@ const updateTodo = (values) => {
   });
 };
 
-const addTodo = () => {
-  console.log("add todo");
-  item.value = {
-    name: "",
-    age: "",
-  };
-  isModalVisible.value = true;
-};
-
 const onSubmit = (values) => {
   console.log(values);
+  if (values.id) {
+  }
   const item = { id: items.value.length + 1, ...values };
   items.value.push(item);
+};
+
+const openModal = (values) => {
+  item.value = values;
+  isModalVisible.value = true;
 };
 
 defineRule("required", required);
