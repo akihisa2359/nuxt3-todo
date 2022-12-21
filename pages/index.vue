@@ -73,6 +73,7 @@ import {
   push,
   update,
 } from "firebase/database";
+import { async } from "@firebase/util";
 
 const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
@@ -90,6 +91,7 @@ onMounted(async () => {
 
 const updateTodo = (values) => {
   const key = push(child(db.value, "todo")).key;
+
   const res = update(db.value, {
     [`/todo/${key}`]: {
       title: values.title,
@@ -98,9 +100,19 @@ const updateTodo = (values) => {
   });
 };
 
-const onSubmit = (values) => {
+const onSubmit = async (values) => {
   console.log(values);
   if (values.id) {
+    console.log("update");
+    await update(db.value, {
+      [`/todo/${values.id}`]: {
+        title: values.title,
+        content: values.content,
+      },
+    });
+    // todo: 画面に反映
+  } else {
+    console.log("insert");
   }
   const item = { id: items.value.length + 1, ...values };
   items.value.push(item);
