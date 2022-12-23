@@ -32,6 +32,7 @@
     </div>
     <div class="container">
       <h1 class="hoge">test</h1>
+      {{ errorMessage }}
       <button @click="openModal(null)">add</button>
       <table>
         <thead>
@@ -81,6 +82,7 @@ const items = ref([]);
 const item = ref(null);
 const isModalVisible = ref(false);
 const db = ref(null);
+const errorMessage = ref(null);
 
 onMounted(async () => {
   db.value = dbRef(getDatabase());
@@ -100,22 +102,27 @@ const updateTodo = (values) => {
   });
 };
 
-const onSubmit = async (values) => {
-  console.log(values);
-  if (values.id) {
-    console.log("update");
-    await update(db.value, {
-      [`/todo/${values.id}`]: {
-        title: values.title,
-        content: values.content,
-      },
-    });
-    // todo: 画面に反映
-  } else {
-    console.log("insert");
+const onSubmit = async (values, actions) => {
+  try {
+    if (values.id) {
+      update(db.value, {
+        [`/todo/${values.id}`]: {
+          title: values.title,
+          content: values.content,
+        },
+      });
+      // todo: 画面に反映
+    } else {
+      console.log("insert");
+    }
+    items.value[values.id] = values;
+    // actions.resetForm(); // seems this not needed
+  } catch (e) {
+    // todo: show error by toast
+    errorMessage.value = e.message;
+  } finally {
+    isModalVisible.value = false;
   }
-  const item = { id: items.value.length + 1, ...values };
-  items.value.push(item);
 };
 
 const openModal = (values) => {
