@@ -78,23 +78,27 @@ import { async } from "@firebase/util";
 
 const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
+// ex) items = {
+//   id1: { title: "title", content: "content" },
+//   id2: { title: "title", content: "content" },
+// };
 const items = ref([]);
 const item = ref(null);
 const isModalVisible = ref(false);
-const db = ref(null);
 const errorMessage = ref(null);
+let db = null;
 
 onMounted(async () => {
-  db.value = dbRef(getDatabase());
-  const res = await get(child(db.value, "todo"));
+  db = dbRef(getDatabase());
+  const res = await get(child(db, "todo"));
   items.value = res.val();
   console.log(res.val());
 });
 
 const updateTodo = (values) => {
-  const key = push(child(db.value, "todo")).key;
+  const key = push(child(db, "todo")).key;
 
-  const res = update(db.value, {
+  const res = update(db, {
     [`/todo/${key}`]: {
       title: values.title,
       content: values.content,
@@ -103,19 +107,18 @@ const updateTodo = (values) => {
 };
 
 const onSubmit = async (values, actions) => {
+  // todo: spinner
   try {
-    if (values.id) {
-      update(db.value, {
-        [`/todo/${values.id}`]: {
-          title: values.title,
-          content: values.content,
-        },
-      });
-      // todo: 画面に反映
-    } else {
-      console.log("insert");
-    }
-    items.value[values.id] = values;
+    console.log(values.id);
+    const id = values.id || push(child(db, "todo")).key;
+    console.log(id);
+    update(db, {
+      [`/todo/${id}`]: {
+        title: values.title,
+        content: values.content,
+      },
+    });
+    items.value[id] = values;
     // actions.resetForm(); // seems this not needed
   } catch (e) {
     // todo: show error by toast
