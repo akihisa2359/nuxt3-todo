@@ -57,6 +57,10 @@
     </div>
 
     <TheFooter></TheFooter>
+    <button type="button" @click="isSpinnerDisplayed = !isSpinnerDisplayed">
+      spinner
+    </button>
+    <Spinner v-if="isSpinnerDisplayed" />
   </div>
 </template>
 
@@ -76,6 +80,7 @@ import {
 } from "firebase/database";
 import { async } from "@firebase/util";
 
+const isSpinnerDisplayed = ref(false);
 const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
 // ex) items = {
