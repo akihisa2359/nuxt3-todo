@@ -57,10 +57,7 @@
     </div>
 
     <TheFooter></TheFooter>
-    <button type="button" @click="isSpinnerDisplayed = !isSpinnerDisplayed">
-      spinner
-    </button>
-    <Spinner v-if="isSpinnerDisplayed" />
+    <Spinner v-if="isLoading" />
   </div>
 </template>
 
@@ -80,7 +77,7 @@ import {
 } from "firebase/database";
 import { async } from "@firebase/util";
 
-const isSpinnerDisplayed = ref(false);
+const isLoading = ref(false);
 const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
 // ex) items = {
@@ -94,30 +91,20 @@ const errorMessage = ref(null);
 let db = null;
 
 onMounted(async () => {
+  isLoading.value = true;
   db = dbRef(getDatabase());
   const res = await get(child(db, "todo"));
   items.value = res.val();
-  console.log(res.val());
+  isLoading.value = false;
 });
 
-const updateTodo = (values) => {
-  const key = push(child(db, "todo")).key;
-
-  const res = update(db, {
-    [`/todo/${key}`]: {
-      title: values.title,
-      content: values.content,
-    },
-  });
-};
-
 const onSubmit = async (values, actions) => {
-  // todo: spinner
   try {
+    isLoading.value;
     console.log(values.id);
     const id = values.id || push(child(db, "todo")).key;
     console.log(id);
-    update(db, {
+    await update(db, {
       [`/todo/${id}`]: {
         title: values.title,
         content: values.content,
@@ -130,6 +117,7 @@ const onSubmit = async (values, actions) => {
     errorMessage.value = e.message;
   } finally {
     isModalVisible.value = false;
+    isLoading.value = false;
   }
 };
 
