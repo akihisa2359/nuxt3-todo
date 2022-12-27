@@ -77,6 +77,8 @@ import {
 } from "firebase/database";
 import { async } from "@firebase/util";
 
+const emit = defineEmits(["call"]);
+
 const isLoading = ref(false);
 const runtimeConfig = useRuntimeConfig();
 console.log(runtimeConfig);
@@ -111,6 +113,7 @@ const onSubmit = async (values, actions) => {
       },
     });
     items.value[id] = values;
+    emit("call");
     // actions.resetForm(); // seems this not needed
   } catch (e) {
     // todo: show error by toast
