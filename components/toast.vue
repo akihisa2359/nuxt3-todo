@@ -3,9 +3,7 @@
 </template>
 
 <script setup>
-defineProps({
-  isVisible: { default: false },
-});
+const isVisible = useToast("isToastVisible");
 </script>
 
 <style scoped lang="scss">

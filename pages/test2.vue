@@ -3,14 +3,10 @@
     {{ counter }}
     <button type="button" @click="counter++">++</button>
     <button type="button" @click="counter--">--</button>
-    <NuxtLink to="/test2">to test2</NuxtLink>
-    <button type="button" @click="isToastVisible = !isToastVisible">
-      toast
-    </button>
+    <NuxtLink to="/test">to test</NuxtLink>
   </div>
 </template>
 
 <script setup>
 const counter = useCounter("counter");
-const isToastVisible = useToast("isToastVisible");
 </script>
