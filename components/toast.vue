@@ -1,5 +1,11 @@
 <template>
-  <div v-if="isVisible" id="toast" style="background: green">success</div>
+  <div
+    :class="{ show: isVisible, hide: !isVisible }"
+    id="toast"
+    style="background: green"
+  >
+    success
+  </div>
 </template>
 
 <script setup>
@@ -14,14 +20,27 @@ const isVisible = useToast("isToastVisible");
   color: white;
   padding: 10px 40px;
   border-radius: 10%;
-  animation: show 1s;
+  &.show {
+    animation: fadeIn 1s;
+  }
+  &.hide {
+    animation: fadeOut 1s;
+  }
 }
-@keyframes show {
+@keyframes fadeIn {
   0% {
-    transform: translateX(100px);
+    transform: translateX(200px);
   }
   100% {
     transform: translateX(0);
+  }
+}
+@keyframes fadeOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(200px);
   }
 }
 </style>
