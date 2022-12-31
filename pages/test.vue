@@ -11,6 +11,9 @@
 </template>
 
 <script setup>
+import { useToast } from "vue-toastification";
+const toast = useToast();
+toast("hoge");
 const counter = useCounter("counter");
 const isToastVisible = useToast("isToastVisible");
 </script>
