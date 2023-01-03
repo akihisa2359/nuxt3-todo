@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="root"
     :class="{ show: isVisible, hide: !isVisible }"
     id="toast"
     style="background: green"
@@ -9,7 +10,14 @@
 </template>
 
 <script setup>
+const root = ref(null);
 const isVisible = useToast("isToastVisible");
+
+const toast = useToast();
+
+onMounter(() => {
+  document.body.append(root.value);
+});
 </script>
 
 <style scoped lang="scss">
