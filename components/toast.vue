@@ -15,7 +15,8 @@ const isVisible = useToast("isToastVisible");
 
 const toast = useToast();
 
-onMounter(() => {
+onMounted(() => {
+  console.log("toast mounted");
   document.body.append(root.value);
 });
 </script>
