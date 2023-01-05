@@ -15,5 +15,5 @@ import toast from "~/components/toast";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const app = createApp(toast);
-  app.mount(document.createElement("div"));
+  app.mount(document.createElement("div")); // toast.vueのonMountedを発火させる
 });

@@ -1,11 +1,16 @@
 <template>
-  <div
-    ref="root"
-    :class="{ show: isVisible, hide: !isVisible }"
-    id="toast"
-    style="background: green"
-  >
-    success
+  <div>
+    <div v-for="(t, i) in toast.toasts" :key="i">
+      <div
+        ref="root"
+        :class="{ show: isVisible, hide: !isVisible }"
+        id="toast"
+        style="background: green"
+        @click="toast.removeToast(i)"
+      >
+        success
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,6 +22,7 @@ const toast = useToast();
 
 onMounted(() => {
   console.log("toast mounted");
+  console.log(root.value);
   document.body.append(root.value);
 });
 </script>
