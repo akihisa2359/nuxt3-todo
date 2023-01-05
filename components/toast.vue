@@ -1,12 +1,11 @@
 <template>
-  <div>
-    <div v-for="(t, i) in toast.toasts" :key="i">
+  <div ref="root">
+    <div v-for="(t, i) in toasts" :key="i">
       <div
-        ref="root"
         :class="{ show: isVisible, hide: !isVisible }"
         id="toast"
         style="background: green"
-        @click="toast.removeToast(i)"
+        @click="onClick(i)"
       >
         success
       </div>
@@ -19,12 +18,17 @@ const root = ref(null);
 const isVisible = useToast("isToastVisible");
 
 const toast = useToast();
+const toasts = toast.toasts;
 
 onMounted(() => {
   console.log("toast mounted");
   console.log(root.value);
-  document.body.append(root.value);
+  document.body.appendChild(root.value);
 });
+
+const onClick = (i) => {
+  toast.removeToast(i);
+};
 </script>
 
 <style scoped lang="scss">

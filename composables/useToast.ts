@@ -13,7 +13,8 @@ export const useToast = () => {
   };
 
   const removeToast = (index) => {
-    return toasts.value.filter((_x, i) => i === index);
+    toasts.value = toasts.value.filter((_x, i) => i !== index);
+    return toasts;
   };
 
   return {
