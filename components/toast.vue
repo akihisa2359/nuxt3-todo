@@ -1,15 +1,17 @@
 <template>
-  <div ref="root">
-    <div v-for="(t, i) in toasts" :key="i">
+  <div ref="root" id="toast-container">
+    <TransitionGroup name="toasts" move-class="toasts-move">
       <div
+        v-for="(t, i) in toasts"
+        :key="i"
         :class="{ show: isVisible, hide: !isVisible }"
-        id="toast"
+        class="toast"
         style="background: green"
         @click="onClick(i)"
       >
         success
       </div>
-    </div>
+    </TransitionGroup>
   </div>
 </template>
 
@@ -32,19 +34,42 @@ const onClick = (i) => {
 </script>
 
 <style scoped lang="scss">
-#toast {
+#toast-container {
   position: fixed;
-  bottom: 30px;
-  right: 10px;
+  bottom: 1em;
+  width: 600px;
+  right: 1em;
+  display: flex;
+  flex-direction: column;
+}
+.toast {
+  // bottom: 30px;
+  // right: 10px;
+  display: flex;
+  max-width: 600px;
+  min-width: 300px;
   color: white;
   padding: 10px 40px;
-  border-radius: 10%;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-bottom: 10px;
+  padding: 22px 24px;
+  // transform: translateY(-300px);
+  transition: all 0.6s ease;
+  // transition: all 1.5s linear;
   &.show {
-    animation: fadeIn 1s;
+    // animation: fadeIn 1s;
   }
   &.hide {
-    animation: fadeOut 1s;
+    // animation: fadeOut 1s;
   }
+  &:nth-of-type(2n + 1) {
+    font-size: 10px;
+  }
+}
+.toasts-move {
+  // transition: all 0.5s ease;
+  // transition: transform 0.8s ease;
 }
 @keyframes fadeIn {
   0% {
