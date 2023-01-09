@@ -7,13 +7,12 @@ export const useToast = () => {
   const toasts = useState("toasts", () => []);
 
   const addToast = (content) => {
-    toasts.value.push(content);
-    console.log(toasts.value);
+    toasts.value.push({ id: Date.now(), content });
     return toasts;
   };
 
-  const removeToast = (index) => {
-    toasts.value = toasts.value.filter((_x, i) => i !== index);
+  const removeToast = (id) => {
+    toasts.value = toasts.value.filter((x) => x.id !== id);
     return toasts;
   };
 

@@ -18,6 +18,16 @@ export default defineNuxtConfig({
       publicTestValue: process.env.TEST_VALUE,
     },
   },
+  app: {
+    head: {
+      link: [
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300",
+        },
+      ],
+    },
+  },
   css: ["@/assets/main.scss", "@/assets/sanitize.css"],
   vite: {
     css: {
