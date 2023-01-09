@@ -1,15 +1,15 @@
 <template>
   <div ref="root" id="toast-container">
-    <TransitionGroup name="toasts" move-class="toasts-move">
+    <TransitionGroup name="toasts" mode="in-out">
       <div
-        v-for="(t, i) in toasts"
-        :key="i"
+        v-for="t in toasts"
+        :key="t.id"
         :class="{ show: isVisible, hide: !isVisible }"
         class="toast"
         style="background: green"
-        @click="onClick(i)"
+        @click="onClick(t.id)"
       >
-        success
+        {{ t.content }}
       </div>
     </TransitionGroup>
   </div>
@@ -29,8 +29,18 @@ onMounted(() => {
 });
 
 const onClick = (i) => {
+  console.log(i);
   toast.removeToast(i);
 };
+
+watch(
+  () => toasts.value.length,
+  (newLength, oldLength) => {
+    if (oldLength < newLength) {
+      // hoge
+    }
+  }
+);
 </script>
 
 <style scoped lang="scss">
@@ -54,17 +64,19 @@ const onClick = (i) => {
   margin-left: auto;
   margin-bottom: 10px;
   padding: 22px 24px;
-  // transform: translateY(-300px);
-  transition: all 0.6s ease;
-  // transition: all 1.5s linear;
-  &.show {
-    // animation: fadeIn 1s;
+  transition: all 0.2s linear;
+}
+.toasts {
+  &-enter-active {
+    animation: fadeIn 1s;
   }
-  &.hide {
-    // animation: fadeOut 1s;
+  &-leave-active {
+    animation: fadeOut 1s;
   }
-  &:nth-of-type(2n + 1) {
-    font-size: 10px;
+  &-move {
+    // transition-timing-function: ease-in-out;
+    // transition-property: all;
+    // transition-duration: 400ms;
   }
 }
 .toasts-move {
@@ -72,19 +84,32 @@ const onClick = (i) => {
   // transition: transform 0.8s ease;
 }
 @keyframes fadeIn {
-  0% {
-    transform: translateX(200px);
+  from {
+    opacity: 0;
+    transform: translate3d(3000px, 0, 0);
   }
-  100% {
-    transform: translateX(0);
+  60% {
+    opacity: 1;
+    transform: translate3d(-25px, 0, 0);
+  }
+  75% {
+    transform: translate3d(10px, 0, 0);
+  }
+  90% {
+    transform: translate3d(-5px, 0, 0);
+  }
+  to {
+    transform: none;
   }
 }
 @keyframes fadeOut {
-  0% {
-    transform: translateX(0);
+  40% {
+    opacity: 1;
+    transform: translate3d(-20px, 0, 0);
   }
-  100% {
-    transform: translateX(200px);
+  to {
+    opacity: 0;
+    transform: translate3d(1000px, 0, 0);
   }
 }
 </style>
