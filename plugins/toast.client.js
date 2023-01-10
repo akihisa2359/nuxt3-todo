@@ -11,7 +11,7 @@
 // });
 
 import { createApp } from "vue";
-import toast from "~/components/toast";
+import toast from "~~/components/toastContainer.vue";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const app = createApp(toast);

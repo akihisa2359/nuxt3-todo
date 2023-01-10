@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import toast from "~/components/toast.vue";
+import toast from "~~/components/toastContainer.vue";
 import { createApp } from "vue";
 import { useToast } from "~/vue-toastification/src";
 
