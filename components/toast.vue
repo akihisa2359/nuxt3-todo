@@ -3,12 +3,11 @@
     class="toast"
     @mouseenter="animationPlayState = 'paused'"
     @mouseleave="animationPlayState = 'running'"
+    @click="onClick(toast.id)"
   >
-    <div
-      :class="{ show: isVisible, hide: !isVisible }"
-      @click="onClick(toast.id)"
-    >
-      {{ toast.content }}
+    <div :class="{ show: isVisible, hide: !isVisible }" style="display: flex">
+      <span class="material-symbols-outlined mr-m"> info </span
+      >{{ toast.content }}
     </div>
     <div
       :style="{ animationPlayState }"
@@ -70,7 +69,7 @@ const onClick = (i) => {
   bottom: 0;
   left: 0;
   transform-origin: left;
-  animation: scale-x-frames 30s linear 1 forwards;
+  animation: scale-x-frames 10s linear 1 forwards;
 }
 
 @keyframes fadeIn {
