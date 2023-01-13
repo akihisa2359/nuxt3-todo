@@ -1,11 +1,12 @@
 <template>
   <div
     class="toast"
+    :class="toast.type"
     @mouseenter="animationPlayState = 'paused'"
     @mouseleave="animationPlayState = 'running'"
     @click="onClick(toast.id)"
   >
-    <div :class="{ show: isVisible, hide: !isVisible }" style="display: flex">
+    <div style="display: flex">
       <span class="material-symbols-outlined mr-m"> info </span
       >{{ toast.content }}
     </div>
@@ -22,14 +23,13 @@ const props = defineProps({
   toast: { default: () => {} },
 });
 
-const isVisible = useToast("isToastVisible");
 const animationPlayState = ref("running");
 
 const toastHandler = useToast();
 
 const onClick = (i) => {
   console.log(i);
-  toastHandler.removeToast(i);
+  toastHandler.remove(i);
 };
 </script>
 
@@ -40,7 +40,6 @@ const onClick = (i) => {
   display: flex;
   max-width: 600px;
   min-width: 300px;
-  background: #4caf50;
   color: white;
   padding: 10px 40px;
   border-radius: 8px;
@@ -48,16 +47,12 @@ const onClick = (i) => {
   margin-bottom: 10px;
   padding: 22px 24px;
   position: relative;
-}
-.toasts {
-  &-enter-active {
-    animation: fadeIn 1s;
+
+  &.success {
+    background: #4caf50;
   }
-  &-leave-active {
-    animation: fadeOut 1s;
-  }
-  &-move {
-    transition: transform 1s ease;
+  &.error {
+    background: #ff5252;
   }
 }
 
@@ -70,36 +65,6 @@ const onClick = (i) => {
   left: 0;
   transform-origin: left;
   animation: scale-x-frames 10s linear 1 forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate3d(3000px, 0, 0);
-  }
-  60% {
-    opacity: 1;
-    transform: translate3d(-25px, 0, 0);
-  }
-  75% {
-    transform: translate3d(10px, 0, 0);
-  }
-  90% {
-    transform: translate3d(-5px, 0, 0);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes fadeOut {
-  40% {
-    opacity: 1;
-    transform: translate3d(-20px, 0, 0);
-  }
-  to {
-    opacity: 0;
-    transform: translate3d(1000px, 0, 0);
-  }
 }
 
 @keyframes scale-x-frames {
