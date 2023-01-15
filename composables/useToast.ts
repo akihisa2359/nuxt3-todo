@@ -11,11 +11,6 @@ enum TYPE {
 export const useToast = () => {
   const toasts = useState("toasts", () => []);
 
-  // const removeToast = (id) => {
-  //   toasts.value = toasts.value.filter((x) => x.id !== id);
-  //   return toasts;
-  // };
-
   const toast = (content: string, type: TYPE): string => {
     const id = String(Date.now());
     toasts.value.push({ id: Date.now(), content, type });
@@ -40,9 +35,4 @@ export const useToast = () => {
   };
 
   return toast;
-  // return {
-  //   toast,
-  //   toasts,
-  //   removeToast,
-  // };
 };
