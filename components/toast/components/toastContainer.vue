@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import { PropType } from "vue";
+import { EVENTS } from "../libs/constants";
 import { EventBus, EventBusInterface } from "../libs/eventBus";
 import { ToastOptionsAndRequiredContent } from "../types";
 
@@ -25,8 +26,13 @@ const props = defineProps({
 });
 
 const setToast = (props: ToastOptionsAndRequiredContent) => {
-  toasts["hoge"] = props;
+  const id = String(Date.now());
+  toasts[id] = props;
 };
+
+onBeforeMount(() => {
+  props.eventBus.on(EVENTS.ADD, setToast);
+});
 
 onMounted(() => {
   console.log("toast mounted");
