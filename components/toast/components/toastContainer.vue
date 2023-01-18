@@ -1,7 +1,7 @@
 <template>
   <div ref="root" id="toast-container">
     <TransitionGroup name="toasts">
-      <Toast v-for="t in toasts" :key="t.id" :toast="t" />
+      <Toast v-for="(t, id) in toasts" :key="id" :toast="t" />
     </TransitionGroup>
   </div>
 </template>
@@ -15,12 +15,8 @@ import type { Ref } from "vue";
 
 const root = ref(null);
 const toasts: Ref<{
-  [toastId: number | string]: ToastOptionsAndRequiredContent;
+  [id: number | string]: ToastOptionsAndRequiredContent;
 }> = ref({});
-
-const toasts2 = ref<{
-  [toastId: number | string]: ToastOptionsAndRequiredContent;
-}>({});
 
 const props = defineProps({
   eventBus: {
@@ -32,7 +28,7 @@ const props = defineProps({
 
 const setToast = (props: ToastOptionsAndRequiredContent) => {
   const id = String(Date.now());
-  toasts[id] = props;
+  toasts.value[id] = props;
 };
 
 onBeforeMount(() => {
