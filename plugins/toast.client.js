@@ -16,10 +16,11 @@ import toast from "~~/components/toastContainer.vue";
 import { EventBus } from "~/components/toast/libs/eventBus";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  const app = createApp(toast);
-  app.mount(document.createElement("div")); // toast.vueのonMountedを発火させる
+  // const app = createApp(toast);
+  // app.mount(document.createElement("div")); // toast.vueのonMountedを発火させる
 
   const app2 = createApp(toast, {
     eventBus: new EventBus(),
   });
+  app2.mount(document.createElement("div"));
 });

@@ -1,7 +1,7 @@
 <template>
   <div ref="root" id="toast-container">
     <TransitionGroup name="toasts">
-      <Toast v-for="(t, id) in toasts" :key="id" :toast="t" />
+      <!-- <Toast v-for="(t, id) in toasts" :key="id" :toast="t" /> -->
     </TransitionGroup>
   </div>
 </template>
