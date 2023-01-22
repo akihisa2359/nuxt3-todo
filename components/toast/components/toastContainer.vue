@@ -27,6 +27,7 @@ const props = defineProps({
 });
 
 const setToast = (props: ToastOptionsAndRequiredContent) => {
+  console.log("setToast is called");
   const id = String(Date.now());
   toasts.value[id] = props;
 };

@@ -8,8 +8,8 @@ const globalEventBus = new EventBus();
 const useToast2 = () => {
   // const toast = {};
   const toast = () => {};
-  toast.add = () => {
-    globalEventBus.emit(EVENTS.ADD);
+  toast.add = (content) => {
+    globalEventBus.emit(EVENTS.ADD, content);
   };
   return toast;
 };
@@ -20,3 +20,5 @@ const initialize = () => {
   });
   app.mount(document.createElement("div"));
 };
+
+export { useToast2, initialize };
