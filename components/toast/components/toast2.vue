@@ -2,7 +2,7 @@
   <div
     class="toast"
     :class="toast.type"
-    @mouseenter="onMouseenter"
+    @mouseenter="animationPlayState = 'paused'"
     @mouseleave="animationPlayState = 'running'"
     @click="onClick(toast.id)"
   >
@@ -22,12 +22,16 @@
 import { PropType } from "vue";
 import { ToastOptionsAndRequiredContent } from "../types";
 
-const props = defineProps({
-  toast: {
-    default: () => {},
-    type: Object as PropType<ToastOptionsAndRequiredContent>,
-  },
-});
+// const props = defineProps({
+//   toast: {
+//     default: () => {},
+//     type: Object as PropType<ToastOptionsAndRequiredContent>,
+//   },
+// });
+
+const props = defineProps<{
+  toast: ToastOptionsAndRequiredContent;
+}>();
 
 const animationPlayState = ref("running");
 
@@ -36,9 +40,6 @@ const toastHandler = useToast();
 const onClick = (i) => {
   console.log(i);
   toastHandler.remove(i);
-};
-const onMouseenter = (e: Event) => {
-  animationPlayState.value = "paused";
 };
 </script>
 
