@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { useToast2 } from "~~/components/toast/index";
+import { useToast2 } from "~~/components/toasts/index";
 
 const toast = useToast2();
 const addToast = () => {

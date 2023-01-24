@@ -13,9 +13,9 @@
 import { createApp } from "vue";
 import toast from "~~/components/toastContainer.vue";
 
-import { EventBus } from "~/components/toast/libs/eventBus";
+import { EventBus } from "~~/components/toasts/libs/eventBus";
 
-import { initialize } from "~~/components/toast/index";
+import { initialize } from "~~/components/toasts/index";
 
 export default defineNuxtPlugin((nuxtApp) => {
   // const app = createApp(toast);
