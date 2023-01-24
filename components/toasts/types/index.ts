@@ -10,6 +10,12 @@ export type ToastOptionsAndRequiredContent = ToastOptions & {
   content: ToastContent;
 };
 
+export type Toast = {
+  id: number | string;
+  content: string; // componentやelementにも拡張する
+  type?: TYPE;
+};
+
 // export type ToastType = {
 //   toast: ToastOptionsAndRequiredContent;
 // };

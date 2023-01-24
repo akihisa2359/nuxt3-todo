@@ -20,13 +20,11 @@
 import { PropType } from "vue";
 import { EVENTS } from "../libs/constants";
 import { EventBus, EventBusInterface } from "../libs/eventBus";
-import { ToastOptionsAndRequiredContent } from "../types";
+import { Toast } from "../types";
 import type { Ref } from "vue";
 
 const root = ref(null);
-const toasts: Ref<{
-  [id: number | string]: ToastOptionsAndRequiredContent;
-}> = ref({});
+const toasts: Ref<Toast[]> = ref([]);
 
 const props = defineProps({
   eventBus: {
