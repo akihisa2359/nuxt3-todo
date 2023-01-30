@@ -13,7 +13,7 @@ const toast = useToast2();
 const addToast = () => {
   console.log("toast");
   console.log(toast);
-  toast.add("hogeに成功しました");
+  toast.success("hogeに成功しました");
 };
 
 // const addSuccessToast = () => {

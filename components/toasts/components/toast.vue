@@ -4,7 +4,7 @@
     :class="toast.type"
     @mouseenter="animationPlayState = 'paused'"
     @mouseleave="animationPlayState = 'running'"
-    @click="onClick(toast.id)"
+    @click="removeToast"
   >
     <div style="display: flex">
       <span class="material-symbols-outlined mr-m"> info </span
@@ -13,25 +13,26 @@
     <div
       :style="{ animationPlayState }"
       class="progress-bar"
-      @animationend="onClick(toast.id)"
+      @animationend="removeToast"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { stringLength } from "@firebase/util";
 import { Prop, PropType } from "vue";
-import { ToastOptionsAndRequiredContent } from "../types";
+import { Toast } from "../types";
 
 const props = defineProps({
-  id: {
-    type: Object as PropType<number | string>,
-  },
-  content: {
-    type: Object as PropType<ToastOptionsAndRequiredContent>,
+  // id: {
+  //   type: Object as PropType<number | string>,
+  // },
+  toast: {
+    type: Object as PropType<Toast>,
     required: true,
   },
 });
+
+const emits = defineEmits(["remove"]);
 
 // const props = withDefaults(defineProps<hoge>(), {
 //   toast: () => {},
@@ -41,9 +42,10 @@ const animationPlayState = ref("running");
 
 const toastHandler = useToast();
 
-const onClick = (i) => {
-  console.log(i);
-  toastHandler.remove(i);
+const removeToast = (i) => {
+  emits("remove");
+  // console.log(i);
+  // toastHandler.remove(i);
 };
 </script>
 

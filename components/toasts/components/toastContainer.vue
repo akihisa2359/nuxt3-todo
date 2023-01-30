@@ -1,18 +1,18 @@
 <template>
   <div ref="root" id="toast-container">
-    <TransitionGroup name="toasts">
-      <ToastsComponentsToast
-        v-for="(t, i) in toasts"
-        :key="i"
-        :content="t"
-        :id="i"
-      />
-      <div v-for="(t, i) in toasts">
-        <h1>{{ t }}</h1>
-        <p>{{ i }}</p>
-      </div>
-      {{ toasts }}
-    </TransitionGroup>
+    <!-- <TransitionGroup name="toasts"> -->
+    <ToastsComponentsToast
+      v-for="(t, id) in toasts"
+      :key="id"
+      :toast="t"
+      @remove="remove(id)"
+    />
+    <div v-for="(t, i) in toasts">
+      <h1>{{ t }}</h1>
+      <p>{{ i }}</p>
+    </div>
+    {{ toasts }}
+    <!-- </TransitionGroup> -->
   </div>
 </template>
 
@@ -24,7 +24,10 @@ import { Toast } from "../types";
 import type { Ref } from "vue";
 
 const root = ref(null);
-const toasts: Ref<Toast[]> = ref([]);
+// const toasts: Ref<Toast[]> = ref([]);
+const toasts: Ref<{
+  [id: string | number]: Toast;
+}> = ref({});
 
 const props = defineProps({
   eventBus: {
@@ -34,7 +37,7 @@ const props = defineProps({
   },
 });
 
-const setToast = (props: ToastOptionsAndRequiredContent) => {
+const setToast = (props: Toast) => {
   console.log("setToast is called");
   console.log(props);
   const id = String(Date.now());
@@ -50,6 +53,10 @@ onMounted(() => {
   console.log(root.value);
   document.body.appendChild(root.value);
 });
+
+const remove = (id) => {
+  console.log(id);
+};
 </script>
 
 <style scoped lang="scss">
