@@ -20,13 +20,13 @@
 import { PropType } from "vue";
 import { EVENTS } from "../libs/constants";
 import { EventBus, EventBusInterface } from "../libs/eventBus";
-import { Toast } from "../types";
+import { Toast, ToastID } from "../types";
 import type { Ref } from "vue";
 
 const root = ref(null);
 // const toasts: Ref<Toast[]> = ref([]);
 const toasts: Ref<{
-  [id: string | number]: Toast;
+  [id: ToastID]: Toast;
 }> = ref({});
 
 const props = defineProps({
@@ -46,6 +46,7 @@ const setToast = (props: Toast) => {
 
 onBeforeMount(() => {
   props.eventBus.on(EVENTS.ADD, setToast);
+  props.eventBus.on(EVENTS.DISMISS, removeToast);
 });
 
 onMounted(() => {
@@ -54,8 +55,12 @@ onMounted(() => {
   document.body.appendChild(root.value);
 });
 
-const remove = (id) => {
-  console.log(id);
+const removeToast = (id: ToastID) => {
+  delete toasts.value[id];
+};
+
+const remove = (id: ToastID) => {
+  props.eventBus.emit(EVENTS.DISMISS, id);
 };
 </script>
 
