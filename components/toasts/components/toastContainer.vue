@@ -1,18 +1,13 @@
 <template>
   <div ref="root" id="toast-container">
-    <!-- <TransitionGroup name="toasts"> -->
-    <ToastsComponentsToast
-      v-for="(t, id) in toasts"
-      :key="id"
-      :toast="t"
-      @remove="remove(id)"
-    />
-    <div v-for="(t, i) in toasts">
-      <h1>{{ t }}</h1>
-      <p>{{ i }}</p>
-    </div>
-    {{ toasts }}
-    <!-- </TransitionGroup> -->
+    <TransitionGroup name="toasts">
+      <ToastsComponentsToast
+        v-for="(t, id) in toasts"
+        :key="id"
+        :toast="t"
+        @remove="remove(id)"
+      />
+    </TransitionGroup>
   </div>
 </template>
 

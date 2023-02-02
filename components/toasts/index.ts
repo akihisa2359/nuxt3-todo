@@ -10,7 +10,7 @@ const useToast2 = () => {
   // const toast = {};
   const toast = () => {};
   toast.add = (content: string) => {
-    globalEventBus.emit(EVENTS.ADD, content);
+    globalEventBus.emit(EVENTS.ADD, { content: content });
   };
 
   toast.success = (content: string) => {
@@ -19,6 +19,15 @@ const useToast2 = () => {
       type: TYPE.SUCCESS,
     });
   };
+
+  toast.error = (content: string) => {
+    globalEventBus.emit(EVENTS.ADD, {
+      content: content,
+      type: TYPE.ERROR,
+    });
+  };
+
+  // toast.remove = (id)
 
   return toast;
 };
