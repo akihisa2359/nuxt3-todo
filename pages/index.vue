@@ -75,7 +75,12 @@ import {
   push,
   update,
 } from "firebase/database";
-import { async } from "@firebase/util";
+import { getFirestore, collection } from "firebase/firestore";
+import anyName, { hoge } from "~/libs/hoge";
+hoge();
+console.log(anyName);
+const res = useCounter("counter");
+console.log(res.value);
 
 const emit = defineEmits(["call"]);
 
@@ -98,6 +103,11 @@ onMounted(async () => {
   const res = await get(child(db, "todo"));
   items.value = res.val();
   isLoading.value = false;
+
+  const fs = getFirestore();
+  const col = collection(fs, "tasks");
+  console.log(col);
+  console.log(col.id);
 });
 
 const onSubmit = async (values, actions) => {
