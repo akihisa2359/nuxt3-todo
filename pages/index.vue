@@ -44,12 +44,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, key) in items" :key="item.id">
-            <td>{{ key }}</td>
+          {{
+            items
+          }}
+          <tr v-for="(item, key) in items">
+            {{
+              item
+            }}
+            {{
+              key
+            }}
+            <!-- <td>{{ key }}</td>
             <td>{{ item.title }}</td>
-            <td>{{ item.content }}</td>
+            <td>{{ item.content }}</td> -->
             <td>
-              <button @click="openModal({ id: key, ...item })">編集</button>
+              <!-- <button @click="openModal({ id: key, ...item })">編集</button> -->
             </td>
           </tr>
         </tbody>
@@ -65,22 +74,10 @@
 import { Field, Form, defineRule, ErrorMessage } from "vee-validate";
 // import { Field, Form, defineRule, ErrorMessage } from "~/libs/vee-validate";
 import { required } from "@vee-validate/rules";
-import {
-  Database,
-  getDatabase,
-  ref as dbRef,
-  set,
-  child,
-  get,
-  push,
-  update,
-} from "firebase/database";
-import { getFirestore, collection } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import anyName, { hoge } from "~/libs/hoge";
 hoge();
-console.log(anyName);
 const res = useCounter("counter");
-console.log(res.value);
 
 const emit = defineEmits(["call"]);
 
@@ -99,15 +96,15 @@ let db = null;
 
 onMounted(async () => {
   isLoading.value = true;
-  db = dbRef(getDatabase());
-  const res = await get(child(db, "todo"));
-  items.value = res.val();
-  isLoading.value = false;
 
-  const fs = getFirestore();
-  const col = collection(fs, "tasks");
-  console.log(col);
-  console.log(col.id);
+  const db = getFirestore();
+  const snapshot = await getDocs(collection(db, "tasks"));
+  console.log(snapshot);
+  snapshot.forEach((doc) => {
+    items.value.push({ [doc.id]: doc.data() });
+    console.log(`${doc.id} => ${doc.data()}`);
+  });
+  isLoading.value = false;
 });
 
 const onSubmit = async (values, actions) => {
