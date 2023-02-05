@@ -44,19 +44,10 @@
           </tr>
         </thead>
         <tbody>
-          {{
-            items
-          }}
-          <tr v-for="(item, key) in items">
-            {{
-              item
-            }}
-            {{
-              key
-            }}
-            <!-- <td>{{ key }}</td>
+          <tr v-for="item in items" :key="item.id">
+            <td>{{ item.id }}</td>
             <td>{{ item.title }}</td>
-            <td>{{ item.content }}</td> -->
+            <td>{{ item.content }}</td>
             <td>
               <!-- <button @click="openModal({ id: key, ...item })">編集</button> -->
             </td>
@@ -74,7 +65,12 @@
 import { Field, Form, defineRule, ErrorMessage } from "vee-validate";
 // import { Field, Form, defineRule, ErrorMessage } from "~/libs/vee-validate";
 import { required } from "@vee-validate/rules";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import anyName, { hoge } from "~/libs/hoge";
 hoge();
 const res = useCounter("counter");
@@ -98,11 +94,8 @@ onMounted(async () => {
   isLoading.value = true;
 
   const db = getFirestore();
-  const snapshot = await getDocs(collection(db, "tasks"));
-  console.log(snapshot);
-  snapshot.forEach((doc) => {
-    items.value.push({ [doc.id]: doc.data() });
-    console.log(`${doc.id} => ${doc.data()}`);
+  const unsubscribe = onSnapshot(collection(db, "tasks"), (snapshot) => {
+    items.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   });
   isLoading.value = false;
 });
