@@ -70,6 +70,9 @@ import {
   collection,
   getDocs,
   onSnapshot,
+  doc,
+  setDoc,
+  addDoc,
 } from "firebase/firestore";
 import anyName, { hoge } from "~/libs/hoge";
 hoge();
@@ -93,7 +96,7 @@ let db = null;
 onMounted(async () => {
   isLoading.value = true;
 
-  const db = getFirestore();
+  db = getFirestore();
   const unsubscribe = onSnapshot(collection(db, "tasks"), (snapshot) => {
     items.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   });
@@ -104,18 +107,24 @@ const onSubmit = async (values, actions) => {
   try {
     isLoading.value;
     console.log(values.id);
-    const id = values.id || push(child(db, "todo")).key;
-    console.log(id);
-    await update(db, {
-      [`/todo/${id}`]: {
-        title: values.title,
-        content: values.content,
-      },
+    const res = await addDoc(collection(db, "tasks"), {
+      title: values.title,
+      content: values.content,
     });
-    items.value[id] = values;
-    emit("call");
+    console.log(res);
+    // const id = values.id || push(child(db, "todo")).key;
+    // console.log(id);
+    // await update(db, {
+    //   [`/todo/${id}`]: {
+    //     title: values.title,
+    //     content: values.content,
+    //   },
+    // });
+    // items.value[id] = values;
+    // emit("call");
     // actions.resetForm(); // seems this not needed
   } catch (e) {
+    console.log(e);
     // todo: show error by toast
     errorMessage.value = e.message;
   } finally {
