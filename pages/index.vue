@@ -49,7 +49,7 @@
             <td>{{ item.title }}</td>
             <td>{{ item.content }}</td>
             <td>
-              <!-- <button @click="openModal({ id: key, ...item })">編集</button> -->
+              <button @click="openModal(item)">編集</button>
             </td>
           </tr>
         </tbody>
@@ -75,6 +75,7 @@ import {
   addDoc,
 } from "firebase/firestore";
 import anyName, { hoge } from "~/libs/hoge";
+import { useToast2 } from "~~/components/toasts";
 hoge();
 const res = useCounter("counter");
 
@@ -107,25 +108,23 @@ const onSubmit = async (values, actions) => {
   try {
     isLoading.value;
     console.log(values.id);
-    const res = await addDoc(collection(db, "tasks"), {
-      title: values.title,
-      content: values.content,
-    });
-    console.log(res);
-    // const id = values.id || push(child(db, "todo")).key;
-    // console.log(id);
-    // await update(db, {
-    //   [`/todo/${id}`]: {
-    //     title: values.title,
-    //     content: values.content,
-    //   },
-    // });
-    // items.value[id] = values;
-    // emit("call");
-    // actions.resetForm(); // seems this not needed
+
+    if (values.id) {
+      const res = await setDoc(doc(db, "tasks", values.id), {
+        title: values.title,
+        content: values.content,
+      });
+      useToast2().success("タスクの更新に成功しました");
+    } else {
+      const res = await addDoc(collection(db, "tasks"), {
+        title: values.title,
+        content: values.content,
+      });
+      useToast2().success("タスクの登録に成功しました");
+    }
   } catch (e) {
     console.log(e);
-    // todo: show error by toast
+    useToast2().error("タスクの登録に失敗しました");
     errorMessage.value = e.message;
   } finally {
     isModalVisible.value = false;
