@@ -34,20 +34,26 @@
       <h1 class="hoge">test</h1>
       {{ errorMessage }}
       <button @click="openModal(null)">add</button>
+      hoge
+      {{ new Date() }}
       <table>
         <thead>
           <tr>
             <th>id</th>
             <th>title</th>
             <th>content</th>
+            <th>updated_at</th>
+            <th>created_at</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in items" :key="item.id">
+          <tr v-for="item in items" :key="item.id" draggable="true">
             <td>{{ item.id }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.content }}</td>
+            <td>{{ item.updated_at }}</td>
+            <td>{{ item.created_at }}</td>
             <td>
               <button @click="openModal(item)">編集</button>
             </td>
@@ -107,18 +113,22 @@ onMounted(async () => {
 const onSubmit = async (values, actions) => {
   try {
     isLoading.value;
+    const date = new Date();
     console.log(values.id);
 
     if (values.id) {
       const res = await setDoc(doc(db, "tasks", values.id), {
         title: values.title,
         content: values.content,
+        updated_at: date,
       });
       useToast2().success("タスクの更新に成功しました");
     } else {
       const res = await addDoc(collection(db, "tasks"), {
         title: values.title,
         content: values.content,
+        created_at: date,
+        updated_at: date,
       });
       useToast2().success("タスクの登録に成功しました");
     }
