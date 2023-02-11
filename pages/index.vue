@@ -34,8 +34,6 @@
       <h1 class="hoge">test</h1>
       {{ errorMessage }}
       <button @click="openModal(null)">add</button>
-      hoge
-      {{ new Date() }}
       <table>
         <thead>
           <tr>
@@ -48,12 +46,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in items" :key="item.id" draggable="true">
+          <tr v-for="item in items" :key="item.id" draggable="false">
             <td>{{ item.id }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.content }}</td>
-            <td>{{ item.updated_at }}</td>
-            <td>{{ item.created_at }}</td>
+            <td>
+              {{ formatDate(item.updated_at.toDate(), "yyyy/MM/dd HH:mm:ss") }}
+              <!-- {{ item.updated_at }} -->
+            </td>
+            <td>
+              {{ formatDate(item.created_at.toDate(), "yyyy/MM/dd HH:mm:ss") }}
+              <!-- {{ item.created_at }} -->
+            </td>
             <td>
               <button @click="openModal(item)">編集</button>
             </td>
@@ -77,11 +81,12 @@ import {
   getDocs,
   onSnapshot,
   doc,
-  setDoc,
   addDoc,
+  updateDoc,
 } from "firebase/firestore";
 import anyName, { hoge } from "~/libs/hoge";
 import { useToast2 } from "~~/components/toasts";
+import { formatDate } from "~/libs/datetime";
 hoge();
 const res = useCounter("counter");
 
@@ -117,7 +122,8 @@ const onSubmit = async (values, actions) => {
     console.log(values.id);
 
     if (values.id) {
-      const res = await setDoc(doc(db, "tasks", values.id), {
+      const docRef = doc(db, "tasks", values.id);
+      await updateDoc(docRef, {
         title: values.title,
         content: values.content,
         updated_at: date,
