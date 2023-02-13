@@ -1,22 +1,21 @@
 <template>
   <div ref="panel" id="panel">
-    <!-- <div class="indicator"> -->
     <div class="up" :style="style"></div>
     <div class="down" :style="style"></div>
   </div>
 </template>
 
-<script setup>
-const props = defineProps({
-  size: {
-    type: "small" | "medium" | "large",
-    default: "medium",
-  },
+<script setup lang="ts">
+interface Props {
+  size?: "small" | "medium" | "large";
+}
+const props = withDefaults(defineProps<Props>(), {
+  size: "medium",
 });
 
 const panel = ref(null);
 const px = computed(() => {
-  switch (props.value.size) {
+  switch (props.size) {
     case "small":
       return 5;
     case "medium":
@@ -28,7 +27,7 @@ const px = computed(() => {
 const style = computed(() => {
   return {
     height: panel.value?.offsetHeight / 2 + "px",
-    border: `${px}px solid transparent`,
+    border: `${px.value}px solid transparent`,
   };
 });
 </script>
@@ -36,6 +35,8 @@ const style = computed(() => {
 <style lang="scss" scoped>
 #panel {
   position: relative;
+  cursor: pointer;
+  background: red;
 }
 .up {
   position: absolute;
