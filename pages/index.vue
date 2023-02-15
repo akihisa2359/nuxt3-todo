@@ -40,7 +40,13 @@
             <th>id</th>
             <th>title</th>
             <th>content</th>
-            <th>updated_at</th>
+            <th class="sortable">
+              updated_at
+              <Sort
+                size="small"
+                @sortChanged="changeSort('updated_at', sortType)"
+              />
+            </th>
             <th>created_at</th>
             <th></th>
           </tr>
@@ -153,6 +159,12 @@ const openModal = (values) => {
   isModalVisible.value = true;
 };
 
+const changeSort = (key, sortType) => {
+  items.value.sort((a, b) => {
+    return a[key].seconds - b[key].seconds;
+  });
+};
+
 defineRule("required", required);
 </script>
 
@@ -168,5 +180,10 @@ table td {
 }
 table tbody tr:nth-child(odd) {
   background-color: #eee;
+}
+
+table .sortable {
+  display: flex;
+  justify-content: space-evenly;
 }
 </style>
