@@ -27,6 +27,7 @@
         </Form>
       </div>
     </TheModal>
+    <Menu />
     <div class="header">
       <h1 class="py-l">todo</h1>
     </div>
@@ -40,19 +41,35 @@
             <th>id</th>
             <th>title</th>
             <th>content</th>
-            <th class="sortable">
-              updated_at
-              <Sort
-                size="small"
-                @sortChanged="changeSort('updated_at', sortType)"
-              />
+            <th>
+              <div class="sortable">
+                updated_at
+                <Sort
+                  size="small"
+                  @sortChanged="changeSort('updated_at')"
+                  :sort="
+                    currentSort.key === 'updated_at' ? currentSort.type : ''
+                  "
+                />
+              </div>
             </th>
-            <th>created_at</th>
+            <th>
+              <div class="sortable">
+                created_at
+                <Sort
+                  size="small"
+                  @sortChanged="changeSort('created_at')"
+                  :sort="
+                    currentSort.key === 'created_at' ? currentSort.type : ''
+                  "
+                />
+              </div>
+            </th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in items" :key="item.id" draggable="false">
+          <tr v-for="item in sortedItems" :key="item.id" draggable="false">
             <td>{{ item.id }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.content }}</td>
@@ -107,6 +124,7 @@ console.log(runtimeConfig);
 // };
 const items = ref([]);
 const item = ref(null);
+const currentSort = ref({ key: "created_at", type: "asc" });
 const isModalVisible = ref(false);
 const errorMessage = ref(null);
 let db = null;
@@ -159,11 +177,27 @@ const openModal = (values) => {
   isModalVisible.value = true;
 };
 
-const changeSort = (key, sortType) => {
-  items.value.sort((a, b) => {
-    return a[key].seconds - b[key].seconds;
-  });
+const changeSort = (clickedKey) => {
+  const { key, type } = currentSort.value;
+  if (key === clickedKey) {
+    currentSort.value.type = type === "asc" ? "desc" : "asc";
+  } else {
+    currentSort.value = { key: clickedKey, type: "asc" };
+  }
 };
+
+const sortedItems = computed(() => {
+  const { key, type } = currentSort.value;
+  const getValue = (v) => {
+    return "seconds" in v ? v.seconds : v;
+  };
+  const calc = (a, b) => {
+    return type === "desc" ? a - b : b - a;
+  };
+  return items.value.sort((a, b) => {
+    return calc(getValue(a[key]), getValue(b[key]));
+  });
+});
 
 defineRule("required", required);
 </script>

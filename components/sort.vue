@@ -13,9 +13,11 @@
 <script setup lang="ts">
 interface Props {
   size?: "small" | "medium" | "large";
+  sort: "desc" | "asc" | "";
 }
 const props = withDefaults(defineProps<Props>(), {
   size: "medium",
+  sort: "",
 });
 const emit = defineEmits(["sortChanged"]);
 
@@ -36,30 +38,19 @@ const upStyle = computed(() => {
   return {
     height: panel.value?.offsetHeight / 2 + "px",
     border: `${px.value}px solid transparent`,
-    borderBottomColor: currentSortType.value === "asc" ? "#555" : "#aaa",
+    borderBottomColor: props.sort === "asc" ? "#555" : "#aaa",
   };
 });
 const downStyle = computed(() => {
   return {
     height: panel.value?.offsetHeight / 2 + "px",
     border: `${px.value}px solid transparent`,
-    borderTopColor: currentSortType.value === "desc" ? "#555" : "#aaa",
+    borderTopColor: props.sort === "desc" ? "#555" : "#aaa",
   };
 });
 
 const changeSort = () => {
-  switch (currentSortType.value) {
-    case "desc":
-      currentSortType.value = "asc";
-      break;
-    case "asc":
-      currentSortType.value = "none";
-      break;
-    case "none":
-      currentSortType.value = "desc";
-      break;
-  }
-  emit("sortChanged", currentSortType.value);
+  emit("sortChanged");
 };
 </script>
 
