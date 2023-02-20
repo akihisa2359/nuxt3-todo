@@ -5,18 +5,18 @@ body {
   // background-color: #f5f5f5;
   font-family: -apple-system, "Segoe UI", "Helvetica Neue",
     "Hiragino Kaku Gothic ProN", メイリオ, meiryo, sans-serif;
-}
-.header {
-  background-color: #094067;
-  color: white;
+  background: #f6f8f9;
 }
 
 .container {
-  width: 100%;
-  max-width: 960px;
-  margin-right: auto;
-  margin-left: auto;
+  max-width: 1420px;
   background-color: white;
+  margin: auto;
+}
+@media screen and (max-width: 1548px) {
+  .container {
+    margin: 0 64px;
+  }
 }
 
 .hoge {

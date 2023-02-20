@@ -27,10 +27,10 @@
         </Form>
       </div>
     </TheModal>
-    <Menu />
-    <div class="header">
+    <Header />
+    <!-- <div class="header">
       <h1 class="py-l">todo</h1>
-    </div>
+    </div> -->
     <div class="container">
       <h1 class="hoge">test</h1>
       {{ errorMessage }}
