@@ -27,12 +27,12 @@
         </Form>
       </div>
     </TheModal>
-    <Header />
+    <Header style="margin-bottom: 24px" />
     <!-- <div class="header">
       <h1 class="py-l">todo</h1>
     </div> -->
     <div class="container">
-      <h1 class="hoge">test</h1>
+      <!-- <h1 class="hoge">test</h1> -->
       {{ errorMessage }}
       <button @click="openModal(null)">add</button>
       <table>
