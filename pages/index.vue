@@ -35,58 +35,64 @@
       <!-- <h1 class="hoge">test</h1> -->
       {{ errorMessage }}
       <button @click="openModal(null)">add</button>
-      <table>
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>title</th>
-            <th>content</th>
-            <th>
-              <div class="sortable">
-                updated_at
-                <Sort
-                  size="small"
-                  @sortChanged="changeSort('updated_at')"
-                  :sort="
-                    currentSort.key === 'updated_at' ? currentSort.type : ''
-                  "
-                />
-              </div>
-            </th>
-            <th>
-              <div class="sortable">
-                created_at
-                <Sort
-                  size="small"
-                  @sortChanged="changeSort('created_at')"
-                  :sort="
-                    currentSort.key === 'created_at' ? currentSort.type : ''
-                  "
-                />
-              </div>
-            </th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in sortedItems" :key="item.id" draggable="false">
-            <td>{{ item.id }}</td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.content }}</td>
-            <td>
-              {{ formatDate(item.updated_at.toDate(), "yyyy/MM/dd HH:mm:ss") }}
-              <!-- {{ item.updated_at }} -->
-            </td>
-            <td>
-              {{ formatDate(item.created_at.toDate(), "yyyy/MM/dd HH:mm:ss") }}
-              <!-- {{ item.created_at }} -->
-            </td>
-            <td>
-              <button @click="openModal(item)">編集</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="scroll-table">
+        <table>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>title</th>
+              <th>content</th>
+              <th>
+                <div class="sortable">
+                  updated_at
+                  <Sort
+                    size="small"
+                    @sortChanged="changeSort('updated_at')"
+                    :sort="
+                      currentSort.key === 'updated_at' ? currentSort.type : ''
+                    "
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="sortable">
+                  created_at
+                  <Sort
+                    size="small"
+                    @sortChanged="changeSort('created_at')"
+                    :sort="
+                      currentSort.key === 'created_at' ? currentSort.type : ''
+                    "
+                  />
+                </div>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in sortedItems" :key="item.id" draggable="false">
+              <td>{{ item.id }}</td>
+              <td>{{ item.title }}</td>
+              <td>{{ item.content }}</td>
+              <td>
+                {{
+                  formatDate(item.updated_at.toDate(), "yyyy/MM/dd HH:mm:ss")
+                }}
+                <!-- {{ item.updated_at }} -->
+              </td>
+              <td>
+                {{
+                  formatDate(item.created_at.toDate(), "yyyy/MM/dd HH:mm:ss")
+                }}
+                <!-- {{ item.created_at }} -->
+              </td>
+              <td>
+                <button @click="openModal(item)">編集</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <TheFooter></TheFooter>
@@ -203,6 +209,10 @@ defineRule("required", required);
 </script>
 
 <style lang="scss">
+.scroll-table {
+  overflow-x: scroll;
+  white-space: nowrap;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -211,6 +221,7 @@ table {
 table th,
 table td {
   text-align: center;
+  padding: 0 12px;
 }
 table tbody tr:nth-child(odd) {
   background-color: #eee;
